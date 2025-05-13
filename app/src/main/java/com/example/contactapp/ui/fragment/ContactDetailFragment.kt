@@ -6,13 +6,19 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.example.contactapp.R
 import com.example.contactapp.databinding.FragmentContactDetailBinding
 import com.example.contactapp.databinding.FragmentHomePageBinding
+import com.example.contactapp.ui.viewmodel.AddContactViewModel
+import com.example.contactapp.ui.viewmodel.ContactDetailViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ContactDetailFragment : Fragment() {
     private lateinit var binding: FragmentContactDetailBinding
+    private lateinit var viewModel: ContactDetailViewModel
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -28,16 +34,15 @@ class ContactDetailFragment : Fragment() {
         binding.buttonUpdate.setOnClickListener {
             val kisi_ad = binding.editTextKisiAd.text.toString()
             val kisi_tel = binding.editTextKisiTel.text.toString()
-
-            guncelle(gelenKisi.kisi_id,kisi_ad,kisi_tel)
+            viewModel.guncelle(gelenKisi.kisi_id,kisi_ad,kisi_tel)
         }
 
         return binding.root
     }
 
-    fun guncelle(kisi_id:Int,
-                 kisi_ad:String,
-                 kisi_tel:String) {
-        Log.e("Kişi Güncelle","$kisi_id - $kisi_ad - $kisi_tel")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val tempViewModel: ContactDetailViewModel by viewModels()
+        viewModel = tempViewModel
     }
 }
